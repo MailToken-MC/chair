@@ -8,7 +8,7 @@ class Server {
 	prompt = new Prompt(this)
 	mail = new Mail(this)
 	constructor() {
-		console.log(g.tagInfo, "Serevr 0.1")
+		console.log(g.tagInfo, "Chair 0.1")
 	}
 	async start() {
 		await this.database.connect()
