@@ -1,7 +1,7 @@
 {
-    "dbname"	: "databasename",
+	"dbname"	: "databasename",
 	"dbuser"	: "user",
-    "dbpass"	: "pass",
+	"dbpass"	: "pass",
 	"email"		: "example@gmail.com",
-	"emailpass" : "emailpassword123"
+	"emailpass"	: "emailpassword123"
 }
