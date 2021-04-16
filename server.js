@@ -21,10 +21,9 @@ class Server {
 }
 
 main = new Server()
-main.start()
-	.then(r => {
-		function update() {
-			main.mail.process().then(() => setTimeout(update, 10000))
-		}
-		update()
-	})
+main.start().then(r => {
+	function update() {
+		main.mail.process().then(() => setTimeout(update, 10000))
+	}
+	update()
+})

@@ -35,6 +35,7 @@ class Mail {
 			console.log(g.tagInfo, "Fetching emails...")
 			addresses = await this.fetch()
 		} catch (e) {
+			console.error(e)
 			console.error(g.tagError, "Failed to fetch emails")
 			return
 		}
@@ -57,9 +58,10 @@ class Mail {
 	}
 	//Fetches any eligible emails and returns the addresses
 	async fetch() {
+		let conn
 		try {
 			let senders = []
-			let conn = await imaps.connect(this.authconfig)
+			conn = await imaps.connect(this.authconfig)
 			let box = await conn.openBox('INBOX')
 			let searchCriteria = [["UNSEEN"], ["HEADER", "SUBJECT", "REGISTRO"]]
 			let fetchOptions = {
@@ -87,6 +89,9 @@ class Mail {
 			return senders
 		} catch(e) {
 			throw(e)
+		} finally {
+			if (conn)
+				conn.end()
 		}
 	}
 	//Send email
