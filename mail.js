@@ -8,7 +8,7 @@ class Mail {
 	authconfig = {
 		imap: {
 			user: config.email,
-			password: config.email_pass,
+			password: config.emailpass,
 			host: 'imap.gmail.com',
 			port: 993,
 			tls: true,
@@ -22,7 +22,7 @@ class Mail {
 		service: 'gmail',
 		auth: {
 			user: config.email,
-			pass: config.email_pass
+			pass: config.emailpass
 		}
 	})
 	constructor(server) {
