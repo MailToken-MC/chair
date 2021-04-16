@@ -18,3 +18,7 @@ class Server {
 
 main = new Server()
 main.start()
+function update() {
+	main.mail.process()
+}
+setInterval(update, 40000);

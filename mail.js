@@ -1,13 +1,14 @@
+const config = require('./config.json');
 const g = require("./global")
 const imaps = require('imap-simple')
 const nodemailer = require('nodemailer')
 const crypto = require("crypto")
 
 class Mail {
-	config = {
+	authconfig = {
 		imap: {
-			user: g.email,
-			password: g.email_pass,
+			user: config.email,
+			password: config.email_pass,
 			host: 'imap.gmail.com',
 			port: 993,
 			tls: true,
@@ -20,8 +21,8 @@ class Mail {
 	transporter = nodemailer.createTransport({
 		service: 'gmail',
 		auth: {
-			user: g.email,
-			pass: g.email_pass
+			user: config.email,
+			pass: config.email_pass
 		}
 	})
 	constructor(server) {
@@ -51,12 +52,13 @@ class Mail {
 		try {
 			console.log(g.tagInfo, "Fetching emails...")
 			let senders = []
-			let conn = await imaps.connect(this.config)
+			let conn = await imaps.connect(this.authconfig)
 			let box = await conn.openBox('INBOX')
 			let searchCriteria = [["UNSEEN"], ["HEADER", "SUBJECT", "REGISTRO"]]
 			let fetchOptions = {
-				markSeen: false,
+				markSeen: true,
 				envelope: true,
+				bodies: ['HEADER', 'TEXT'],
 			}
 			let mails = await conn.search(searchCriteria, fetchOptions)
 			for (let mail of mails) {
@@ -91,7 +93,7 @@ class Mail {
 			message = "<p>Este email ya ha sido utilizado para crear una cuenta</p>"
 		}
 		let mailOptions = {
-			from: g.email,
+			from: config.email,
 			to: address,
 			subject: "Minecraft hardcore pruebas",
 			html: message
@@ -105,8 +107,8 @@ class Mail {
 	//Send a test mail
 	async test() {
 		let mailOptions = {
-			from: g.email,
-			to: g.email,
+			from: config.email,
+			to: config.email,
 			subject: "Correo de prueba",
 			html: "<p>Correo de prueba</p>",
 		}

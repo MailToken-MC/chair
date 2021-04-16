@@ -1,0 +1,25 @@
+{
+  "name": "chair",
+  "version": "1.0.0",
+  "description": "A node script which handles email",
+  "main": "server.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mailtoken-mc/chair.git"
+  },
+  "dependencies": {
+    "imap-simple": ">=5.0.0",
+    "mariadb": ">=2.5.3",
+    "nodemailer": ">=6.5.0"
+  },
+  "keywords": [
+    "minecraft",
+    "mail"
+  ],
+  "author": "qgerman2",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mailtoken-mc/chair/issues"
+  },
+  "homepage": "https://github.com/mailtoken-mc/chair#readme"
+}

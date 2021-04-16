@@ -1,3 +1,4 @@
+const config = require('./config.json');
 const g = require("./global")
 const mariadb = require("mariadb")
 
@@ -8,8 +9,8 @@ class Database {
 	}
 	async connect() {
 		let pool = mariadb.createPool({
-			user: g.dbuser, 
-			password: g.dbpass
+			user: config.dbuser,
+			password: config.dbpass
 		})
 		try {
 			this.conn = await pool.getConnection()
@@ -26,10 +27,10 @@ class Database {
 	async clear() {
 		try {
 			console.log(g.tagInfo, "Deleting database...")
-			await this.conn.query("DROP DATABASE IF EXISTS " + g.dbName)
+			await this.conn.query("DROP DATABASE IF EXISTS " + config.dbname)
 			console.log(g.tagInfo, "Creating new database and tables...")
-			await this.conn.query("CREATE DATABASE " + g.dbName + " CHARACTER SET = 'utf8'")
-			await this.conn.query("USE " + g.dbName)
+			await this.conn.query("CREATE DATABASE " + config.dbname + " CHARACTER SET = 'utf8'")
+			await this.conn.query("USE " + config.dbname)
 			await this.conn.query("CREATE TABLE `emails` (`hash` TEXT(65535) NULL DEFAULT NULL,`registered` TINYINT(4) NULL DEFAULT '0')")
 			console.log(g.tagInfo, "Done")
 		} catch(e) {
@@ -39,7 +40,7 @@ class Database {
 	//Check if the address if eligible for a code
 	async check(address, hash) {
 		try {
-			await this.conn.query("USE " + g.dbName)
+			await this.conn.query("USE " + config.dbname)
 			let match = await this.conn.query("SELECT hash, registered FROM emails WHERE hash = '" + hash + "'")
 			//First time we encountered this email, creade code and send it
 			if (match.length == 0) {
