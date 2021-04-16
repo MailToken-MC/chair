@@ -36,7 +36,7 @@ class Prompt {
 				break
 			}
 			default: {
-				console.log(g.tagInfo, "Unknown command '" + input + "'")
+				console.error(g.tagError, "Unknown command '" + input + "'")
 			}
 		}
 	}
