@@ -1,4 +1,4 @@
-### chair
+## chair
 
 Sets up the database and responds to emails
 
