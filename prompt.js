@@ -23,9 +23,8 @@ class Prompt {
 				await this.server.database.clear()
 				break
 			}
-			case "exit": {
-				await this.server.database.disconnect()
-				process.exit(1)
+			case "stop": {
+				this.server.stop()
 				break
 			}
 			case "mail": {

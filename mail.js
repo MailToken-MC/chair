@@ -30,27 +30,34 @@ class Mail {
 	}
 	//Starts the process of fetching email, checking addresses against the database and sending email
 	async process() {
-		let addresses = await this.fetch()
+		let addresses
+		try {
+			console.log(g.tagInfo, "Fetching emails...")
+			addresses = await this.fetch()
+		} catch (e) {
+			console.error(g.tagError, "Failed to fetch emails")
+			return
+		}
 		if (addresses.length > 0) {
-			addresses.forEach(async (address) => {
+			for (const address of addresses) {
 				let hash = crypto.createHash("sha256").update(address).digest('hex')
 				try {
 					//Check if address is eligible for a code
 					let eligible = await this.server.database.check(address, hash)
 					//Send mail with the results
-					this.server.mail.send(address, hash, eligible)
+					console.log(g.tagInfo, "Sending mail to " + address)
+					await this.server.mail.send(address, hash, eligible)
 				} catch(e) {
-					console.error(e)
+					console.error(g.tagError, "Failed to send email to " + address)
 				}
-			})
+			}
 		} else {
 			console.log(g.tagInfo, "No new emails")
-		}	
+		}
 	}
 	//Fetches any eligible emails and returns the addresses
 	async fetch() {
 		try {
-			console.log(g.tagInfo, "Fetching emails...")
 			let senders = []
 			let conn = await imaps.connect(this.authconfig)
 			let box = await conn.openBox('INBOX')
@@ -68,7 +75,7 @@ class Mail {
 				//Check if sender is not already on senders list
 				let alreadyQueued = false
 				for (let queuedSender of senders) {
-					if (queuedSender == sender) {
+					if (queuedSender === sender) {
 						alreadyQueued = true
 						break
 					}
@@ -79,12 +86,11 @@ class Mail {
 			}
 			return senders
 		} catch(e) {
-			console.error(e)
+			throw(e)
 		}
 	}
 	//Send email
 	async send(address, hash, eligible) {
-		console.log(g.tagInfo, "Sending mail to " + address)
 		let code = hash.substring(0, 5).toUpperCase()
 		let message
 		if (eligible) {
@@ -101,7 +107,8 @@ class Mail {
 		try {
 			await this.transporter.sendMail(mailOptions)
 		} catch(e) {
-			console.log(e)
+			throw e
+			//console.log(e)
 		}
 	}
 	//Send a test mail

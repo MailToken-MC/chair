@@ -14,11 +14,17 @@ class Server {
 		await this.database.connect()
 		this.prompt.start()
 	}
+	async stop() {
+		await this.database.disconnect()
+		process.exit(1)
+	}
 }
 
 main = new Server()
 main.start()
-function update() {
-	main.mail.process()
-}
-setInterval(update, 40000);
+	.then(r => {
+		function update() {
+			main.mail.process().then(() => setTimeout(update, 10000))
+		}
+		update()
+	})
