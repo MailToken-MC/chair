@@ -27,3 +27,7 @@ You will need to create the database itself, to do this run this after npm start
 ```
 cleardb
 ```
+To test the sending of emails you can try
+```
+test
+```
