@@ -29,9 +29,13 @@ class Database {
 			console.log(g.tagInfo, "Deleting database...")
 			await this.conn.query("DROP DATABASE IF EXISTS " + config.dbname)
 			console.log(g.tagInfo, "Creating new database and tables...")
+			//Create database
 			await this.conn.query("CREATE DATABASE " + config.dbname + " CHARACTER SET = 'utf8'")
 			await this.conn.query("USE " + config.dbname)
+			//Token table
 			await this.conn.query("CREATE TABLE `emails` (`hash` TEXT(65535) NULL DEFAULT NULL,`registered` TINYINT(4) NULL DEFAULT '0')")
+			//Accounts table
+			await this.conn.query("CREATE TABLE `cuenta` (`user` TEXT NOT NULL,`pass` TEXT(32) NOT NULL DEFAULT '')")
 			console.log(g.tagInfo, "Done")
 		} catch(e) {
 			console.error(e);
